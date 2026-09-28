@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   Compass,
   Check,
-  ExternalLink
+  Info,
+  Sparkles
 } from 'lucide-react';
 import { sendScoreToClassPlatform } from '../utils/scorePlatform';
 import confetti from 'canvas-confetti';
@@ -27,6 +28,7 @@ export default function ScoreReportModal({
   if (!isOpen || !evaluation) return null;
 
   const { totalScore, grade, title, badgeColor, breakdown, stats, details } = evaluation;
+  const isComplete = stats.completedCount === stats.targetTotal;
 
   const handleSubmitScore = () => {
     const res = sendScoreToClassPlatform(totalScore, details);
@@ -48,7 +50,7 @@ export default function ScoreReportModal({
               <h3 className="font-bold text-slate-800 text-base">
                 삼각형의 합동 훈련 종합 평가표
               </h3>
-              <p className="text-xs text-slate-400">행동 분석 기반 100점 만점 차등 배점 리포트</p>
+              <p className="text-xs text-slate-400">100점 만점 누적형 차등 배점 리포트</p>
             </div>
           </div>
           <button
@@ -75,14 +77,38 @@ export default function ScoreReportModal({
             </div>
 
             <p className="text-xs text-slate-500 max-w-xs mt-1 leading-relaxed">
-              정답 여부뿐만 아니라 <strong>함정 간파 능력, 오답 횟수, 서술형 대응점 정확도</strong>를 종합 채점했습니다.
+              {isComplete && totalScore === 100 ? (
+                <span className="text-purple-700 font-bold">
+                  🎉 모든 문제를 실수 없이 다 맞추어 100점 만점을 달성했습니다!
+                </span>
+              ) : isComplete ? (
+                <span>
+                  전체 {stats.targetTotal}문제를 모두 완료했습니다. (재시도 및 오답 부분점수 반영)
+                </span>
+              ) : (
+                <span>
+                  현재 <strong>{stats.targetTotal}문제 중 {stats.completedCount}문제</strong>를 완료한 중간 점수입니다. 
+                  남은 문제를 모두 풀면 100점 만점을 획득할 수 있습니다!
+                </span>
+              )}
             </p>
           </div>
+
+          {/* Progress Notice if not complete */}
+          {!isComplete && (
+            <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-amber-900 leading-relaxed">
+                <strong>안내:</strong> 아직 풀지 않은 문제는 0점 처리됩니다. 
+                <span className="underline ml-1">모든 문제를 다 맞추어야 100점 만점이 부여됩니다.</span>
+              </div>
+            </div>
+          )}
 
           {/* Differentiated Rubric Breakdown */}
           <div className="flex flex-col gap-2.5">
             <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Target className="w-4 h-4 text-indigo-600" /> 세부 행동별 배점 내역
+              <Target className="w-4 h-4 text-indigo-600" /> 영역별 획득 점수
             </h4>
 
             {Object.entries(breakdown).map(([key, item]) => {
@@ -109,16 +135,20 @@ export default function ScoreReportModal({
           {/* Action Stats Chips */}
           <div className="grid grid-cols-3 gap-2">
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
-              <span className="text-[10px] text-slate-400 font-medium block">1차 정답률</span>
-              <span className="text-sm font-bold text-slate-800">{stats.firstTryAccuracy}%</span>
+              <span className="text-[10px] text-slate-400 font-medium block">진행 문제수</span>
+              <span className="text-sm font-bold text-slate-800">
+                {stats.completedCount} / {stats.targetTotal}
+              </span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
-              <span className="text-[10px] text-slate-400 font-medium block">오답 재시도</span>
+              <span className="text-[10px] text-slate-400 font-medium block">1차 시도 정답</span>
+              <span className="text-sm font-bold text-slate-800">
+                {stats.firstTryCount !== undefined ? `${stats.firstTryCount}개` : `${stats.firstTryAccuracy}%`}
+              </span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
+              <span className="text-[10px] text-slate-400 font-medium block">총 오답 횟수</span>
               <span className="text-sm font-bold text-slate-800">{stats.wrongAttemptsTotal}회</span>
-            </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
-              <span className="text-[10px] text-slate-400 font-medium block">포개어보기 활용</span>
-              <span className="text-sm font-bold text-slate-800">{stats.superposeUsed}회</span>
             </div>
           </div>
 
@@ -154,7 +184,7 @@ export default function ScoreReportModal({
             }}
             className="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-200/60 rounded-xl flex items-center gap-1.5 transition-colors"
           >
-            <RotateCcw className="w-4 h-4" /> 다시 풀기
+            <RotateCcw className="w-4 h-4" /> 처음부터 다시 풀기
           </button>
 
           <button
