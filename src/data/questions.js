@@ -134,11 +134,11 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 120,
-      vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
+      vertices: [{ label: 'E' }, { label: 'F' }, { label: 'D' }],
       edges: [
-        { from: 1, to: 2, text: '4cm', ticks: 1 },
-        { from: 2, to: 0, text: '7cm', ticks: 2 },
-        { from: 0, to: 1, text: '6cm', ticks: 3 },
+        { from: 0, to: 1, text: '4cm', ticks: 1 },
+        { from: 1, to: 2, text: '7cm', ticks: 2 },
+        { from: 2, to: 0, text: '6cm', ticks: 3 },
       ],
       angles: [],
     },
@@ -171,13 +171,13 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 180,
-      vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
+      vertices: [{ label: 'E' }, { label: 'D' }, { label: 'F' }],
       edges: [
-        { from: 1, to: 0, text: '6cm', ticks: 1 },
-        { from: 1, to: 2, text: '8cm', ticks: 2 },
+        { from: 0, to: 1, text: '6cm', ticks: 1 },
+        { from: 0, to: 2, text: '8cm', ticks: 2 },
       ],
       angles: [
-        { vertex: 1, text: '40°', marker: 'arc1' },
+        { vertex: 0, text: '40°', marker: 'arc1' },
       ],
     },
     knownSides: 2,
@@ -188,7 +188,7 @@ export const CURATED_QUESTIONS = [
     congruent: true,
     matchingVertices: 'EDF',
     hint: '△ABC에서는 변 AB와 AC 사이의 각 A(40°)이고, △DEF에서는 변 ED와 EF 사이의 각 E(40°)입니다.',
-    explanation: '두 변(6cm, 8cm)과 그 끼인각(40°)이 각각 같으므로 [SAS 합동]입니다! 꼭짓점 A에 대응하는 점은 E입니다.',
+    explanation: '두 변(6cm, 8cm)과 그 끼인각(40°)이 각각 같으므로 [SAS 합동]입니다! (대응점: A ↔ E, B ↔ D, C ↔ F)',
   },
 
   // --- LEVEL 3: 시험 단골 함정 (SSA 함정, AAA 함정, 각 계산 ASA) ---
@@ -371,13 +371,13 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 60,
-      vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
+      vertices: [{ label: 'F' }, { label: 'D' }, { label: 'E' }],
       edges: [
-        { from: 2, to: 0, ticks: 1 },
-        { from: 0, to: 1, ticks: 2 },
+        { from: 0, to: 1, ticks: 1 },
+        { from: 1, to: 2, ticks: 2 },
       ],
       angles: [
-        { vertex: 0, marker: 'arc1' },
+        { vertex: 1, marker: 'arc1' },
       ],
     },
     knownSides: 2,
@@ -388,7 +388,7 @@ export const CURATED_QUESTIONS = [
     congruent: true,
     matchingVertices: 'FDE',
     hint: '△ABC에서 눈금 1개와 눈금 2개 사이의 각 B에 호가 있습니다. △DEF에서도 눈금 1개와 2개 사이의 각 D에 호가 있습니다.',
-    explanation: '두 변의 길이가 각각 같고, 그 사이의 끼인각의 크기가 같으므로 [SAS 합동]입니다! (대응점: B ↔ D)',
+    explanation: '두 변의 길이가 각각 같고, 그 사이의 끼인각의 크기가 같으므로 [SAS 합동]입니다! (대응점: A ↔ F, B ↔ D, C ↔ E)',
   },
   {
     id: 'q11_symbols_asa',
@@ -409,13 +409,13 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 180,
-      vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
+      vertices: [{ label: 'E' }, { label: 'F' }, { label: 'D' }],
       edges: [
-        { from: 0, to: 2, ticks: 2 },
+        { from: 1, to: 2, ticks: 2 },
       ],
       angles: [
-        { vertex: 0, marker: 'cross' },
-        { vertex: 2, marker: 'dot' },
+        { vertex: 1, marker: 'dot' },
+        { vertex: 2, marker: 'cross' },
       ],
     },
     knownSides: 1,

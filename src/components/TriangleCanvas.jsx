@@ -31,12 +31,12 @@ export default function TriangleCanvas({
   const rotation = triangle.rotation || 0;
   const flipX = triangle.flipX || false;
 
-  // Center of the canvas
-  const center = { x: 140, y: 135 };
+  // True centroid of the triangle points used as center of rotation
+  const baseCentroid = getCentroid(basePoints[0], basePoints[1], basePoints[2]);
 
   // Calculate transformed points for this triangle
-  const points = transformPoints(basePoints, rotation, flipX, false, center);
-  const centroid = getCentroid(points[0], points[1], points[2]);
+  const points = transformPoints(basePoints, rotation, flipX, false, baseCentroid);
+  const centroid = baseCentroid;
 
   // Color schemes
   const colors = {
@@ -110,9 +110,9 @@ export default function TriangleCanvas({
       </div>
 
       {/* SVG Canvas */}
-      <div className="relative w-full aspect-[280/240] max-w-[280px]">
+      <div className="relative w-full aspect-[280/255] max-w-[280px]">
         <svg
-          viewBox="0 0 280 240"
+          viewBox="0 0 280 255"
           className="w-full h-full select-none overflow-visible"
         >
           {/* Subtle grid background */}
@@ -121,7 +121,7 @@ export default function TriangleCanvas({
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" strokeWidth="1" />
             </pattern>
           </defs>
-          <rect width="280" height="240" fill={`url(#grid-${triangle.name})`} rx="12" />
+          <rect width="280" height="255" fill={`url(#grid-${triangle.name})`} rx="12" />
 
           {/* Triangle Main Body */}
           <path
