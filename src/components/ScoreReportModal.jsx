@@ -21,9 +21,16 @@ export default function ScoreReportModal({
   onClose,
   evaluation,
   onRestart,
+  autoSubmitted = false,
 }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitResult, setSubmitResult] = useState(null);
+  const [submitted, setSubmitted] = useState(autoSubmitted);
+  const [submitResult, setSubmitResult] = useState(autoSubmitted ? { sent: true } : null);
+
+  React.useEffect(() => {
+    if (autoSubmitted) {
+      setSubmitted(true);
+    }
+  }, [autoSubmitted, isOpen]);
 
   if (!isOpen || !evaluation) return null;
 
@@ -160,7 +167,7 @@ export default function ScoreReportModal({
               </div>
               <div className="flex-1">
                 <div className="text-xs font-bold text-emerald-900">
-                  학급 플랫폼으로 점수가 성공적으로 전송되었습니다!
+                  {autoSubmitted ? '🚀 11문제 완주! 학급 플랫폼으로 점수가 자동으로 전송되었습니다!' : '학급 플랫폼으로 점수가 성공적으로 전송되었습니다!'}
                 </div>
                 <div className="text-[11px] text-emerald-700 mt-0.5 font-mono line-clamp-1">
                   점수: {totalScore}점 ({details})

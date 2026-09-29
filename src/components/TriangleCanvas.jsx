@@ -22,7 +22,7 @@ export default function TriangleCanvas({
   className = '',
 }) {
   // Base canonical points in a 280x250 coordinate space
-  const basePoints = [
+  const basePoints = triangle.customPoints || [
     { x: 120, y: 45 },   // Vertex 0 (Top / Peak)
     { x: 45, y: 195 },   // Vertex 1 (Bottom Left)
     { x: 235, y: 195 },  // Vertex 2 (Bottom Right)

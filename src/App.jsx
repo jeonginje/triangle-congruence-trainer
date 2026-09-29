@@ -31,6 +31,7 @@ function App() {
 
   const [currentStreak, setCurrentStreak] = useState(0);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [isAutoSubmitted, setIsAutoSubmitted] = useState(false);
   const [currentEvaluation, setCurrentEvaluation] = useState(null);
 
   const currentQuestion = CURATED_QUESTIONS[currentQuestionIdx];
@@ -89,8 +90,11 @@ function App() {
       streakMax: Math.max(prev.streakMax, newStreak),
     }));
 
-    // If all 11 questions are completed, pop up the final score report!
-    if (nextCompleted.size === CURATED_QUESTIONS.length) {
+    // If all 11 questions are completed or the 11th question finishes, auto-submit score!
+    const isFinishedAll = nextCompleted.size === CURATED_QUESTIONS.length;
+    const isFinishedLastQuestion = currentQuestionIdx === CURATED_QUESTIONS.length - 1;
+
+    if (isFinishedAll || isFinishedLastQuestion) {
       setTimeout(() => {
         const evalData = calculateDifferentiatedScore({
           mode: 'step',
@@ -102,9 +106,14 @@ function App() {
           superposeUsed: trainerMetrics.superposeUsed,
           streakMax: Math.max(trainerMetrics.streakMax, newStreak),
         });
+
+        // 🌟 AUTOMATIC SCORE SUBMISSION TO CLASS PLATFORM
+        sendScoreToClassPlatform(evalData.totalScore, evalData.details);
+
         setCurrentEvaluation(evalData);
+        setIsAutoSubmitted(true);
         setShowReportModal(true);
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 } });
       }, 700);
     }
   };
@@ -122,6 +131,7 @@ function App() {
       streakMax: trainerMetrics.streakMax,
     });
     setCurrentEvaluation(evalData);
+    setIsAutoSubmitted(false);
     setShowReportModal(true);
   };
 
@@ -130,6 +140,7 @@ function App() {
     setQuestionResults({});
     setCurrentQuestionIdx(0);
     setCurrentStreak(0);
+    setIsAutoSubmitted(false);
     setTrainerMetrics({
       totalAttempted: 0,
       firstTryCorrect: 0,
@@ -261,6 +272,7 @@ function App() {
         onClose={() => setShowReportModal(false)}
         evaluation={currentEvaluation}
         onRestart={handleRestartTrainer}
+        autoSubmitted={isAutoSubmitted}
       />
 
       {/* Footer */}

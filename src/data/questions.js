@@ -248,6 +248,11 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 0,
+      customPoints: [
+        { x: 125, y: 80 },
+        { x: 70, y: 185 },
+        { x: 205, y: 185 },
+      ],
       vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
       edges: [],
       angles: [
@@ -307,7 +312,7 @@ export const CURATED_QUESTIONS = [
   {
     id: 'q9_insufficient_info',
     level: 3,
-    title: '조건 부족 (정보가 2개만 주어졌을 때)',
+    title: '⚠️ 조건 부족 (정보가 2개만 주어졌을 때)',
     description: '삼각형이 하나로 정해지려면 조건이 최소 몇 개 필요할까요?',
     triangleA: {
       name: 'ABC',
@@ -322,6 +327,11 @@ export const CURATED_QUESTIONS = [
     triangleB: {
       name: 'DEF',
       rotation: 0,
+      customPoints: [
+        { x: 120, y: 45 },   // D
+        { x: 45, y: 195 },   // E (DE = 6cm, angle D = 55°)
+        { x: 190, y: 155 },  // F is different position!
+      ],
       vertices: [{ label: 'D' }, { label: 'E' }, { label: 'F' }],
       edges: [
         { from: 0, to: 1, text: '6cm', ticks: 1 },
@@ -337,8 +347,8 @@ export const CURATED_QUESTIONS = [
     correctAnswer: 'NONE',
     congruent: false,
     matchingVertices: null,
-    hint: '현재 알려진 조건은 한 변과 한 각뿐입니다.',
-    explanation: '❌ [합동 조건 부족!] 삼각형의 합동을 증명하려면 적어도 3가지 요소(변 3개, 두 변과 끼인각, 한 변과 양 끝 각)의 정보가 있어야 합니다.',
+    hint: '현재 알려진 조건은 한 변(6cm)과 한 각(55°)뿐입니다. 삼각형의 합동 조건(SSS, SAS, ASA)은 모두 3개의 단서가 필요합니다!',
+    explanation: '❌ [합동 조건 부족!] 삼각형의 합동을 증명하려면 적어도 3가지 요소(변 3개, 두 변과 끼인각, 한 변과 양 끝 각)의 정보가 있어야 합니다. 단서가 2개뿐이면 그림처럼 전혀 다른 모양의 삼각형이 만들어질 수 있습니다.',
   },
 
   // --- LEVEL 4: 기호로만 주어진 정밀 판별 ---

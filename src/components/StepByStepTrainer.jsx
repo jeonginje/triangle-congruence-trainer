@@ -128,6 +128,13 @@ export default function StepByStepTrainer({
         isCorrect = true;
         message = '정답! 세 각이 같아도 크기가 다를 수 있어 모양만 같고 합동은 아닙니다.';
       }
+    } else if ((question.knownSides + question.knownAngles) < 3) {
+      if (optionKey === 'insufficient') {
+        isCorrect = true;
+        message = '정확합니다! 주어진 정보가 2개(변 1개, 각 1개)뿐이어서 조건이 부족합니다.';
+      } else {
+        message = '삼각형이 하나로 결정되거나 합동이 되려면 최소 3가지 조건이 필요합니다. 정보가 부족합니다!';
+      }
     } else {
       isCorrect = true;
       message = '조건을 올바르게 분석했습니다.';
@@ -485,6 +492,31 @@ export default function StepByStepTrainer({
                   <div className="font-bold text-slate-800 text-sm">❌ 아닙니다! 크기가 다를 수 있어 합동이 아닙니다.</div>
                   <div className="text-xs text-slate-500 mt-1">변의 길이가 하나도 없으므로 확대/축소된 닮음일 뿐입니다.</div>
                 </button>
+              </div>
+            )}
+
+            {/* Case 5: When total clues < 3 (Question 9: 1 side, 1 angle) */}
+            {question.knownSides + question.knownAngles < 3 && (
+              <div className="flex flex-col gap-3">
+                <p className="text-sm text-slate-700 font-medium">
+                  삼각형이 하나로 정해지거나 합동이 되려면 <span className="text-indigo-600 font-bold">최소 3가지 조건</span>(변 3개, 두 변과 끼인각, 한 변과 양 끝 각)이 필요합니다. 현재 주어진 단서만으로 두 삼각형의 합동 여부를 판별할 수 있을까요?
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <button
+                    onClick={() => handleCheckStep2('insufficient')}
+                    className="p-4 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-2xl text-left transition-all"
+                  >
+                    <div className="font-bold text-slate-800 text-sm">❌ 판별할 수 없습니다 (단서 부족)</div>
+                    <div className="text-xs text-slate-500 mt-1">알려진 조건이 변 1개, 각 1개(총 2개)뿐이므로 합동 여부를 알 수 없습니다.</div>
+                  </button>
+                  <button
+                    onClick={() => handleCheckStep2('can_determine')}
+                    className="p-4 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-300 rounded-2xl text-left transition-all"
+                  >
+                    <div className="font-bold text-slate-800 text-sm">👉 판별할 수 있습니다.</div>
+                    <div className="text-xs text-slate-500 mt-1">변 1개와 각 1개의 크기가 같으므로 충분합니다.</div>
+                  </button>
+                </div>
               </div>
             )}
 
